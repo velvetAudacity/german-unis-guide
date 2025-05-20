@@ -1,0 +1,305 @@
+/* Add to your css/style1.css */
+
+/* Add to your css/style1.css */
+
+.hero-section {
+   background-image: url("../images/german.jpg");
+   background-size: cover;
+   background-position: center;
+   background-repeat: no-repeat;
+    color:#ffffff;
+    padding: 300px 0;
+    text-align: center;
+}
+
+.hero-section h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* For the features section below the hero */
+.features {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    flex-basis: 30%;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+.feature-item img {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+/* Basic footer and general page content styling */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 30px;
+}
+
+.page-content {
+    background-color: #fff;
+    padding: 30px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* CHANGED: Added max-width for better content containment */
+.container {
+    width: 80%;
+    max-width: 1200px; /* ADDED */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* CHANGED: Added position relative and z-index */
+.navbar {
+    background: #ffffff;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative; /* ADDED */
+    z-index: 1000; /* ADDED */
+}
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar .logo {
+    color: #333;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+}
+.navbar .nav-links > li {
+    margin-left: 20px;
+    position: relative; /* ADDED for dropdown positioning */
+}
+
+/* CHANGED: Improved link hover states */
+.navbar .nav-links li a {
+    color: #555;
+    text-decoration: none;
+    padding: 8px 15px;
+    display: block;
+    border-radius: 4px;
+    transition: all 0.3s ease; /* CHANGED to 'all' */
+}
+
+.navbar .nav-links li a:hover {
+    color: #007bff;
+    background-color: #e9ecef;
+}
+
+.navbar .nav-links > li > a .arrow-down {
+    font-size: 0.7em;
+    margin-left: 5px;
+    transition: transform 0.3s ease; /* ADDED for smooth rotation */
+}
+
+/* CHANGED: Simplified dropdown approach */
+.dropdown-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 240px;
+    display: none; /* CHANGED to single approach */
+}
+
+/* CHANGED: Simplified hover state */
+.dropdown-li:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    margin-left: 0 !important;
+}
+
+.dropdown-menu li a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    transition: all 0.2s ease; /* CHANGED to 'all' */
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+}
+
+/* CHANGED: Added arrow rotation animation */
+.dropdown-li:hover .arrow-down {
+    transform: rotate(180deg);
+}
+
+/* CHANGED: Added mobile responsiveness */
+@media (max-width: 768px) {
+    .navbar .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .navbar .nav-links > li {
+        margin-left: 0;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        display: none;
+    }
+    
+    .dropdown-li:hover > .dropdown-menu {
+        display: block;
+    }
+}
+
+/* CHANGED: Added focus states for accessibility */
+.nav-links a:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.search-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.search-input-container{
+    position: absolute;
+    right: 0;
+    top: 100%;
+    display: none;
+    background: white;
+    padding: 10px;
+     border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1000;
+    width: 250px;
+}
+.search-input-container.active {
+    display: flex; /* Show when active */
+}
+
+#search-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    width: 100%;
+}
+
+#search-submit {
+    padding: 8px 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+#search-submit:hover {
+    background: #0069d9;
+}
+
+.quick-links {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.quick-links h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.3rem;
+}
+
+.quick-links ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.quick-links li {
+    background-color: #e9ecef;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.quick-links li:hover {
+    background-color: #007bff;
+}
+
+.quick-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+.quick-links li:hover a {
+    color: white;
+}
+
+.content-section {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.content-section:last-child {
+    border-bottom: none;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-item h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
