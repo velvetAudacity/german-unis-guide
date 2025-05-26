@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studienkolleg Entry Test Preparation</title>
+     <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="main.html" class="logo">German Uni Guide</a>
+                <ul class="nav-links">
+                    <li class="dropdown-li"> 
+                        <a href="program-overview.html">Programs <span class="arrow-down">&#9662;</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="bachelor-program.html">Bachelor</a></li>
+                            <li><a href="masters-program.html">Master's</a></li>
+                            <li><a href="phd-program.html">PhD</a></li>
+                            <li><a href="studienkolleg.html">Studienkolleg</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-li"> <a href="requirements-overview.html">Requirements <span class="arrow-down">&#9662;</span></a>
+               <ul class="dropdown-menu"> <li><a href="hzb-requirements.html">HZB (Entrance Qualification)</a></li>
+            <li><a href="language-requirements.html">Language Requirements</a></li>
+            <li><a href="financial-proof.html">Financial Proof</a></li>
+            <li><a href="application-documents.html">Application Documents</a></li>
+            <li><a href="visa-requirements.html">Visa Requirements</a></li>
+            </ul>
+            </li>
+                    <li><a href="living-in-germany.html">Living in Germany</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                      <li>
+              <button id="search-toggle" aria-label="Open Search">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+               </svg>
+             </button>
+              <div class="search-input-container">
+            <input type="text" id="search-input" placeholder="Search..." aria-label="Search input">
+            <button id="search-submit">Search</button>
+        </div>
+    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container exam-page-content">
+     <section class="hero1-section">
+            <h1>Studienkolleg Entrance Exam Preparation</h1>
+            <p>Everything you need to pass the Aufnahmeprüfung for Studienkolleg</p>
+        </section>
+
+        <!-- ===== SECTION 1: EXAM OVERVIEW ===== -->
+        <section class="exam-overview">
+            <h2>About the Aufnahmeprüfung</h2>
+            <div class="exam-cards">
+                <div class="exam-card">
+                    <h3>German Test</h3>
+                    <ul>
+                        <li>Lückentest (Gap text)</li>
+                        <li>Reading comprehension</li>
+                        <li>Grammar exercises</li>
+                        <li>Writing sample</li>
+                    </ul>
+                </div>
+                <div class="exam-card math-card">
+                    <h3>Mathematics Test</h3>
+                    <ul>
+                        <li>Algebra</li>
+                        <li>Geometry</li>
+                        <li>Functions</li>
+                        <li>Word problems</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mock-tests">
+        <h2>Interactive Mock Tests</h2>
+
+        <div class="test-selector"> 
+         <button class="test-btn active" data-test="german">German</button>
+                <button class="test-btn" data-test="math">Mathematics</button>
+        </div>
+
+        <!--German Tst interface-->
+        <div id="german-test" class="test-interface">
+            <h3>German Lückentest Practice</h3>
+            <div class="test-content"> 
+             <p>Fil in the blanks with the correct words:</p>
+             <div class="cloze-test">
+                  <p>Die Stadt, ___ ich wohne, ist sehr schön. ___ Sommer gibt es viele Touristen, ___ das Wetter meistens gut ist.</p>
+                  <div class="answers">
+                    <input type="text" placeholder="in der">
+                    <input type="text" placeholder="Im">
+                    <input type="text" placeholder="weil">
+                  </div>
+             </div>
+             <button class="check-answers">CHeck Answers</button>
+            </div>
+        </div>
+
+         <!-- Math Test Interface -->
+            <div id="math-test" class="test-interface" style="display:none;">
+                <h3>Mathematics Problems</h3>
+                <div class="test-content">
+                    <div class="math-problem">
+                        <p>Solve for x: 3(x + 5) = 2x + 20</p>
+                        <input type="text" placeholder="Your answer">
+                    </div>
+                    <button class="check-answers">Check Solution</button>
+                </div>
+            </div>
+        </section>
+
+         <section class="study-resources">
+            <h2>Study Materials</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h3>Official Prep Books</h3>
+                    <ul>
+                        <li><a href="#">"Fit für den TestDaF"</a></li>
+                        <li><a href="#">"Studienkolleg Mathematik"</a></li>
+                    </ul>
+                </div>
+                <div class="resource-card">
+                    <h3>Helpful Websites</h3>
+                    <ul>
+                        <li><a href="https://www.goethe.de">Goethe Institut</a></li>
+                        <li><a href="https://www.deutsch-lernen.com">Deutsch-Lernen.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 4: AI PRACTICE BOT ===== -->
+        <section class="ai-practice">
+            <h2>AI Practice Assistant</h2>
+            <div class="ai-chat-container">
+                <div class="ai-messages">
+                    <div class="ai-message">
+                        <p>Hello! I can help you practice for your Studienkolleg exam. Ask me anything about German grammar, math problems, or the application process.</p>
+                    </div>
+                </div>
+                <div class="ai-input">
+                    <input type="text" placeholder="Ask your question...">
+                    <button>Send</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+</body>
+
+   <footer>
+        <div class="container">
+            <p>© 2023 German Uni Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</html>
