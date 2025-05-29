@@ -401,60 +401,80 @@ html {
     margin-bottom: 40px;
 }
 
-.cloze-test p {
-    line-height: 2.5;
+.cloze-test input.correct {
+  border: 2px solid green;
+  background-color: #e6ffe6; /* Light green background */
 }
 
-.answers input {
-    margin: 0 5px;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.cloze-test input.incorrect {
+  border: 2px solid red;
+  background-color: #ffe6e6; /* Light red background */
 }
 
-.check-answers {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* AI Chat Bot */
-.ai-chat-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.ai-messages {
-    height: 300px;
-    padding: 20px;
-    overflow-y: auto;
-    background: #f8f9fa;
-}
-
-.ai-input {
-    display: flex;
+/* For overall messages */
+.overall-message {
     padding: 10px;
-    background: white;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
-.ai-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.overall-message.correct {
+    background-color: #d4edda; /* Bootstrap green */
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-.ai-input button {
-    margin-left: 10px;
-    padding: 10px 20px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.overall-message.incorrect {
+    background-color: #f8d7da; /* Bootstrap red */
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.correct-answers-display {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.math-feedback {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333; /* Default color */
+}
+.math-feedback.correct {
+  color: green;
+}
+.math-feedback.incorrect {
+  color: red;
+}
+
+
+/* AI Chat Messages */
+.ai-message {
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 80%;
+  clear: both; /* Ensures messages don't overlap */
+}
+
+.ai-message.ai {
+  background-color: #e9ecef;
+  float: left;
+  border-bottom-left-radius: 2px;
+}
+
+.ai-message.user {
+  background-color: #007bff;
+  color: white;
+  float: right;
+  border-bottom-right-radius: 2px;
+}
+
+.ai-messages::after { /* Clearfix for floats */
+  content: "";
+  display: table;
+  clear: both;
 }

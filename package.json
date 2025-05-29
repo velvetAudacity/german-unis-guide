@@ -2,9 +2,9 @@
   "name": "german-unis-guide",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+     "start": "parcel exam-preparation.html",
+    "build": "parcel build exam-preparation.html --dist-dir dist"
   },
   "repository": {
     "type": "git",
