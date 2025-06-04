@@ -1,7 +1,7 @@
 // react-components/MockTestsContainer.jsx
 import React, { useState } from 'react';
-import GermanLueckentest from './GermanLueckentest';
-import MathTest from './MathTest';
+import GermanTestSection from './GermanTestSection';
+import MathTestSection from './MathTestSection';
 
 function MockTestsContainer() {
   const [activeTest, setActiveTest] = useState('german'); // 'german' or 'math'
@@ -25,7 +25,7 @@ function MockTestsContainer() {
       </div>
 
       <div className="test-interface"> {/* This div now dynamically holds the active test */}
-        {activeTest === 'german' ? <GermanLueckentest /> : <MathTest />}
+        {activeTest === 'german' ? <GermanTestSection /> : <MathTestSection />}
       </div>
     </section>
   );
