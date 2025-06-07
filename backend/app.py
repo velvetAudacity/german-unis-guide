@@ -1,4 +1,6 @@
+# backend/app.py
 import os
+import psycopg2
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
@@ -6,22 +8,73 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app =Flask(__name__)
-CORS(app) 
+app = Flask(__name__)
+CORS(app)
 
+# --- Database Connection ---
+def get_db_connection():
+    conn = psycopg2.connect(
+        dbname=os.getenv('DB_NAME'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        host=os.getenv('DB_HOST'),
+        port=os.getenv('DB_PORT')
+    )
+    return conn
+
+# --- OpenAI Client (kept for continuity, but you can comment out if not using AI right now) ---
 try:
     api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY enviroment variable not set.")
-    client = OpenAI(api_key=api_key)
-except Exception as e:
-    print(f"Error initiallizing OpenAI client: {e}")
-    client = None    
-
-@app.route('/api/chat', methods=['POST'])
-def chat():  # <-- The function definition starts here
+    client = OpenAI(api_key=api_key) if api_key else None
     if not client:
-        return jsonify({"error": "AI service not available. API key missing or invalid."}), 503
+        print("Warning: OPENAI_API_KEY not set. AI features will be disabled.")
+except Exception as e:
+    print(f"Error initializing OpenAI client: {e}")
+    client = None
+
+# --- ADD THIS ENTIRE BLOCK TO YOUR backend/app.py ---
+@app.route('/api/questions', methods=['GET'])
+def get_questions():
+    test_type = request.args.get('test_type')
+    topic = request.args.get('topic')
+    limit = request.args.get('limit', 1, type=int) # Default to 1 question
+
+    if not test_type or not topic:
+        return jsonify({"error": "test_type and topic parameters are required"}), 400
+
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT id, question_text, correct_answers, options FROM questions WHERE test_type = %s AND topic = %s ORDER BY RANDOM() LIMIT %s",
+            (test_type, topic, limit)
+        )
+        questions_data = cur.fetchall()
+        cur.close()
+
+        questions_list = []
+        for q_id, text, correct_ans, options in questions_data:
+            questions_list.append({
+                "id": q_id,
+                "question_text": text,
+                "correct_answers": correct_ans, # This will be a Python list/dict from JSONB
+                "options": options
+            })
+        return jsonify(questions_list)
+    except Exception as e:
+        print(f"Error fetching questions: {e}")
+        return jsonify({"error": "Failed to fetch questions."}), 500
+    finally:
+        if conn:
+            conn.close()
+# --- END OF BLOCK TO ADD ---
+
+# --- Existing AI Chat Route ---
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    if not client:
+        return jsonify({"error": "AI service not available (API key missing)."}), 503
 
     data = request.json
     user_message = data.get('message')
@@ -37,13 +90,12 @@ def chat():  # <-- The function definition starts here
     messages.append({"role": "user", "content": user_message})
 
     try:
-        # Call OpenAI API
         chat_completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
         ai_response = chat_completion.choices[0].message.content
-        return jsonify({"response": ai_response})  # <-- This return must be inside the 'chat' function
+        return jsonify({"response": ai_response})
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
         return jsonify({"error": "Failed to get response from AI. Please try again later."}), 500
@@ -53,7 +105,6 @@ def index():
     return "Flask backend for German Uni Guide is running!"
 
 if __name__ == '__main__':
-    # Use a different port than Parcel's development server (e.g., 5000)
     app.run(debug=True, port=5000)
 
 

@@ -1,40 +1,70 @@
-// react-components/GermanLueckentest.jsx
-import React, { useState } from 'react';
+// react-components/LueckentestExercise.jsx
+import React, { useState, useEffect } from 'react';
 
-function GermanLueckentest() {
-  const sentenceParts = [
-    "Die Stadt,",
-    "ich wohne, ist sehr schön.",
-    "Sommer gibt es viele Touristen,",
-    "das Wetter meistens gut ist."
-  ];
-  const blanks = [
-    { id: 0, correctAnswer: 'in der', placeholder: 'e.g., in der' },
-    { id: 1, correctAnswer: 'Im', placeholder: 'e.g., Im' },
-    { id: 2, correctAnswer: 'weil', placeholder: 'e.g., weil' }
-  ];
-
-  const [userAnswers, setUserAnswers] = useState(blanks.map(() => ''));
-  const [feedback, setFeedback] = useState(blanks.map(() => ''));
+function LueckentestExercise() {
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [feedback, setFeedback] = useState([]);
   const [overallMessage, setOverallMessage] = useState('');
   const [showCorrectAnswers, setShowCorrectAnswers] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Function to fetch a new question
+  const fetchQuestion = async () => {
+    setIsLoading(true);
+    setError(null);
+    setCurrentQuestion(null);
+    setUserAnswers([]);
+    setFeedback([]);
+    setOverallMessage('');
+    setShowCorrectAnswers(false);
+
+    try {
+      // Adjust the URL to your Flask backend and specify the test type and topic
+      const response = await fetch('http://localhost:5000/api/questions?test_type=german&topic=lueckentest&limit=1');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data && data.length > 0) {
+        setCurrentQuestion(data[0]);
+        // Initialize userAnswers based on the number of expected blanks (from correct_answers length)
+        setUserAnswers(Array(data[0].correct_answers.length).fill(''));
+        setFeedback(Array(data[0].correct_answers.length).fill(''));
+      } else {
+        setError('No questions found for this topic.');
+      }
+    } catch (err) {
+      console.error("Failed to fetch question:", err);
+      setError('Failed to load question. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestion(); // Fetch question on component mount
+  }, []); // Empty dependency array means it runs once on mount
 
   const handleChange = (e, index) => {
     const newAnswers = [...userAnswers];
     newAnswers[index] = e.target.value;
     setUserAnswers(newAnswers);
-    // Clear feedback when user starts typing again
     const newFeedback = [...feedback];
-    newFeedback[index] = '';
+    newFeedback[index] = ''; // Clear feedback when user types
     setFeedback(newFeedback);
     setOverallMessage('');
     setShowCorrectAnswers(false);
   };
 
   const checkAnswers = () => {
+    if (!currentQuestion) return;
+
     let allCorrect = true;
     const newFeedback = userAnswers.map((answer, index) => {
-      if (answer.toLowerCase().trim() === blanks[index].correctAnswer.toLowerCase().trim()) {
+      const correctAnswer = currentQuestion.correct_answers[index];
+      if (answer.toLowerCase().trim() === correctAnswer.toLowerCase().trim()) {
         return 'correct';
       } else {
         allCorrect = false;
@@ -42,7 +72,7 @@ function GermanLueckentest() {
       }
     });
     setFeedback(newFeedback);
-    setShowCorrectAnswers(true); // Show correct answers after check
+    setShowCorrectAnswers(true);
 
     if (allCorrect) {
       setOverallMessage('All answers are correct! Well done!');
@@ -51,46 +81,59 @@ function GermanLueckentest() {
     }
   };
 
+  const resetExercise = () => {
+    fetchQuestion(); // Fetch a new question (or just reset current one if you prefer)
+  };
+
+  if (isLoading) {
+    return <div className="test-content"><p>Loading Lückentest exercise...</p></div>;
+  }
+
+  if (error) {
+    return <div className="test-content"><p style={{color: 'red'}}>Error: {error}</p></div>;
+  }
+
+  if (!currentQuestion) {
+      return <div className="test-content"><p>No Lückentest questions available.</p></div>;
+  }
+
+  // Split question text into parts for rendering blanks
+  const questionParts = currentQuestion.question_text.split(/\{(\d+)\}/g);
+  // Example: "Text {0} more {1}" -> ["Text ", "0", " more ", "1", ""]
+  // We only care about the text parts and the blank indices
+
   return (
     <div>
-      <h3>German Lückentest Practice</h3>
+      <h3>Lückentest (Gap Text)</h3>
       <div className="test-content">
         <p>Fill in the blanks with the correct words:</p>
         <div className="cloze-test">
           <p>
-            {sentenceParts[0]}
-            <input
-              type="text"
-              value={userAnswers[0]}
-              onChange={(e) => handleChange(e, 0)}
-              className={feedback[0]}
-              placeholder={blanks[0].placeholder}
-            />
-            {sentenceParts[1]}
-            <input
-              type="text"
-              value={userAnswers[1]}
-              onChange={(e) => handleChange(e, 1)}
-              className={feedback[1]}
-              placeholder={blanks[1].placeholder}
-            />
-            {sentenceParts[2]}
-            <input
-              type="text"
-              value={userAnswers[2]}
-              onChange={(e) => handleChange(e, 2)}
-              className={feedback[2]}
-              placeholder={blanks[2].placeholder}
-            />
-            {sentenceParts[3]}
+            {questionParts.map((part, index) => {
+              if (index % 2 === 1) { // This is a blank index from the split
+                const blankIndex = parseInt(part); // Get the number from {0}, {1}
+                return (
+                  <input
+                    key={blankIndex}
+                    type="text"
+                    value={userAnswers[blankIndex] || ''}
+                    onChange={(e) => handleChange(e, blankIndex)}
+                    className={feedback[blankIndex]}
+                    placeholder={`e.g., ${currentQuestion.correct_answers[blankIndex] || 'answer'}`}
+                  />
+                );
+              }
+              return <span key={index}>{part}</span>; // This is a text part
+            })}
           </p>
           {showCorrectAnswers && (
             <div className="correct-answers-display">
-              <p>Correct answers: {blanks.map(b => b.correctAnswer).join(', ')}</p>
+              <p>Correct answers: {currentQuestion.correct_answers.join(', ')}</p>
             </div>
           )}
         </div>
         <button className="check-answers" onClick={checkAnswers}>Check Answers</button>
+        <button className="reset-exercise" onClick={resetExercise} style={{marginLeft: '10px'}}>Next Question</button> {/* Changed to Next Question */}
         {overallMessage && (
             <p className={`overall-message ${overallMessage.includes('correct') ? 'correct' : 'incorrect'}`}>
                 {overallMessage}
@@ -101,4 +144,4 @@ function GermanLueckentest() {
   );
 }
 
-export default GermanLueckentest;
+export default LueckentestExercise;
