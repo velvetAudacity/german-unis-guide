@@ -105,41 +105,68 @@ function LueckentestExercise() {
   return (
     <div>
       <h3>Lückentest (Gap Text)</h3>
-      <div className="test-content">
-        <p>Fill in the blanks with the correct words:</p>
-        <div className="cloze-test">
-          <p>
-            {questionParts.map((part, index) => {
-              if (index % 2 === 1) { // This is a blank index from the split
-                const blankIndex = parseInt(part); // Get the number from {0}, {1}
-                return (
-                  <input
-                    key={blankIndex}
-                    type="text"
-                    value={userAnswers[blankIndex] || ''}
-                    onChange={(e) => handleChange(e, blankIndex)}
-                    className={feedback[blankIndex]}
-                    placeholder={`e.g., ${currentQuestion.correct_answers[blankIndex] || 'answer'}`}
-                  />
-                );
-              }
-              return <span key={index}>{part}</span>; // This is a text part
-            })}
-          </p>
-          {showCorrectAnswers && (
-            <div className="correct-answers-display">
-              <p>Correct answers: {currentQuestion.correct_answers.join(', ')}</p>
-            </div>
+
+      {isLoading && (
+        <div className="test-content">
+          <p>Loading Lückentest exercise...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="test-content">
+          <p style={{ color: 'red' }}>Error: {error}</p>
+        </div>
+      )}
+
+      {!isLoading && !error && !currentQuestion && (
+        <div className="test-content">
+          <p>No Lückentest questions available.</p>
+        </div>
+      )}
+
+      {currentQuestion && (
+        <div className="test-content">
+          <p>Fill in the blanks with the correct words:</p>
+          <div className="cloze-test">
+            <p>
+              {currentQuestion.question_text.split(/(\{)(\d+)(\})/g).map((part, index) => {
+                if (part === '{') return null; // Skip the '{' character itself
+                if (part === '}') return null; // Skip the '}' character itself
+
+                if (index > 0 && currentQuestion.question_text.split(/(\{)(\d+)(\})/g)[index - 1] === '{') {
+                  // This is the actual blank index (e.g., '0', '1', '2')
+                  const blankIndex = parseInt(part);
+                  return (
+                    <input
+                      key={`blank-${currentQuestion.id}-${blankIndex}`} // Enhanced key for global uniqueness if questions change
+                      type="text"
+                      value={userAnswers[blankIndex] || ''}
+                      onChange={(e) => handleChange(e, blankIndex)}
+                      className={feedback[blankIndex]}
+                      placeholder={`e.g., ${currentQuestion.correct_answers[blankIndex] || 'answer'}`}
+                      aria-label={`Blank ${blankIndex + 1}`}
+                    />
+                  );
+                }
+                // This is a text part
+                return <span key={`text-${currentQuestion.id}-${index}`}>{part}</span>; // Enhanced key
+              })}
+            </p>
+            {showCorrectAnswers && (
+              <div className="correct-answers-display">
+                <p>Correct answers: {currentQuestion.correct_answers.join(', ')}</p>
+              </div>
+            )}
+          </div>
+          <button className="check-answers" onClick={checkAnswers}>Check Answers</button>
+          <button className="reset-exercise" onClick={resetExercise} style={{marginLeft: '10px'}}>Next Question</button>
+          {overallMessage && (
+              <p className={`overall-message ${overallMessage.includes('correct') ? 'correct' : 'incorrect'}`}>
+                  {overallMessage}
+              </p>
           )}
         </div>
-        <button className="check-answers" onClick={checkAnswers}>Check Answers</button>
-        <button className="reset-exercise" onClick={resetExercise} style={{marginLeft: '10px'}}>Next Question</button> {/* Changed to Next Question */}
-        {overallMessage && (
-            <p className={`overall-message ${overallMessage.includes('correct') ? 'correct' : 'incorrect'}`}>
-                {overallMessage}
-            </p>
-        )}
-      </div>
+      )}
     </div>
   );
 }
