@@ -99,7 +99,48 @@ def chat():
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
         return jsonify({"error": "Failed to get response from AI. Please try again later."}), 500
+    
 
+@app.route('/api/search', methods=['GET'])
+def search():
+    query = request.args.get('q', '') # Get search query from URL parameter 'q'
+    if not query:
+        return jsonify({"results": []}) # Return empty results if no query
+
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Use plainto_tsquery for simple keyword search (handles punctuation)
+        # For more advanced queries (AND/OR), use to_tsquery
+        search_query = f"plainto_tsquery('english', %s)"
+
+        # Perform the search. The @@ operator checks for match.
+        # ts_rank orders by relevance.
+        cur.execute(
+            f"SELECT id, question_text, test_type, topic, ts_rank(tsv_question_text, {search_query}) as rank FROM questions WHERE tsv_question_text @@ {search_query} ORDER BY rank DESC LIMIT 10",
+            (query, query) # Pass query twice for both plainto_tsquery calls
+        )
+        search_results = cur.fetchall()
+        cur.close()
+
+        results_list = []
+        for q_id, text, test_type, topic, rank in search_results:
+            results_list.append({
+                "id": q_id,
+                "question_text": text,
+                "test_type": test_type,
+                "topic": topic,
+                "relevance": rank # Rank can be used for display or sorting
+            })
+        return jsonify(results_list)
+    except Exception as e:
+        print(f"Error during search: {e}")
+        return jsonify({"error": "Failed to perform search."}), 500
+    finally:
+        if conn:
+            conn.close()
 @app.route('/')
 def index():
     return "Flask backend for German Uni Guide is running!"
