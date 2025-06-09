@@ -141,6 +141,39 @@ def search():
     finally:
         if conn:
             conn.close()
+
+@app.route('/api/contact', methods=['POST'])
+def submit_contact_form():
+    data = request.json
+    name = data.get('name')
+    phone_number =data.get('phone_number')
+    email = data.get('email')
+    message = data.get('message')
+    is_human = data.get('is_human', False)
+
+    if not name or not email or not message:
+        return jsonify({"error": "Name, Email, and Message are required fields."})
+    
+    conn = None
+    try:
+        conn =get_db_connection()
+        cur =conn.cursor()
+
+        cur.execute(
+            "INSERT INTO contact_messages (name, phone_number, email, message, is_human) VALUES (%s, %s, %s, %s, %s) RETURNING id",
+            (name, phone_number, email, message, is_human)
+        )
+        message.id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        return jsonify({"message": "Message sent successfully!", "id": message_id}), 201
+    except Exception as e:
+        printf(f"Error submitting contact message: {e}")
+        return jsonify({"error": "Failed to send the message. Please try again later."}), 500
+    finally:
+        if conn:
+            conn.close()
+
 @app.route('/')
 def index():
     return "Flask backend for German Uni Guide is running!"
