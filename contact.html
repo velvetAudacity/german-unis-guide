@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - German Uni Guide</title>
+     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+     <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">German Uni Guide</a>
+                <ul class="nav-links">
+                    <li class="dropdown-li"><a href="#">Programs <span class="arrow-down">&#9662;</span></a>
+                        <ul class="dropdown-menu"><li> <a href="#">Bachelor</a></li><li> <a href="#">Master's</a></li><li> <a href="#">PhD</a></li><li> <a href="studienkolleg.html">Studienkolleg</a></li> </ul>
+                    </li>
+                    <li class="dropdown-li"> <a href="#">Requirements <span class="arrow-down">&#9662;</span></a>
+                        <ul class="dropdown-menu"> <li><a href="#">HZB (Entrance Qualification)</a></li><li><a href="#">Language Requirements</a></li><li><a href="#">Financial Proof</a></li><li><a href="#">Application Documents</a></li><li><a href="#">Visa Requirements</a></li></ul>
+                    </li>
+                    <li><a href="#">Living in Germany</a></li>
+                    <li><a href="contact.html">Contact</a></li> <li>
+                        <button id="search-toggle" aria-label="Open Search">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                        <div class="search-input-container">
+                            <input type="text" id="search-input" placeholder="Search..." aria-label="Search input">
+                            <button id="search-submit">Search</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="contatc-form-root"></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> German Uni Guide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script type="module" src="js/contactApp.js"></script>
+</body>
+</html>
