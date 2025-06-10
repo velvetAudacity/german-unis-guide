@@ -19,7 +19,7 @@ function ContactForm(){
         }));
     };
     
-    consthandleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus({type: 'loading', message: 'Sending message...'});
 

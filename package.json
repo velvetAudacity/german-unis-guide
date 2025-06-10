@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-     "start": "parcel exam-preparation.html",
-    "build": "parcel build exam-preparation.html --dist-dir dist"
+     "start": "parcel index.html exam-preparation.html search-results.html studienkolleg.html",
+    "build": "parcel build index.html exam-preparation.html search-results.html studienkolleg.html  --dist-dir dist"
   },
   "repository": {
     "type": "git",
