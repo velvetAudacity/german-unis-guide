@@ -13,7 +13,7 @@ function ContactForm(){
    
     const handleChange = (e) => {
         const{name, value, type, checked} =e.target;
-        setFormmData((prevData) => ({
+        setFormData((prevData) => ({
             ...prevData,
             [name]:type === 'checkbox' ?checked: value,
         }));
